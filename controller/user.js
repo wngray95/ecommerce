@@ -12,5 +12,16 @@ exports.userById = (req, res, next, id) => {
             req.profile = user;
             next();
     })
+}
 
+exports.deleteById = (req, res) => {
+    User.findByIdAndDelete(req.params.id)
+        .exec((err, User) => {
+            if (err) return res.status(400).json({
+                error: err
+            });
+            return res.json({
+                user: User
+            })
+        })
 }

@@ -28,11 +28,10 @@ exports.signin = function(req, res) {
 
         User.findOne({email}, (err, user) => {
             if (err || !user) {
-                return res.status(400).json({err: 'User does not exist'});
-            }
+                return res.status(400).json({err: 'User does not exist'}); }
+                
             if(!user.authenticate(password)) {
-                return res.status(401).json({err: 'Email and/or password wrong'});
-            }
+                return res.status(401).json({err: 'Email and/or password wrong'}); }
 
             const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET);
             res.cookie("auth", token, {expire: new Date() + 9999});
@@ -42,7 +41,6 @@ exports.signin = function(req, res) {
 };
 
 exports.signout = (req, res) => {
-    console.log('signout()  ' + req.profile)
     res.clearCookie("auth");
     res.json({message: 'Signout success'})
 }
@@ -56,7 +54,6 @@ exports.requireSignin = expressJwt({
 
 
 exports.isAuth = (req, res, next) => {
-    console.log('isAuth()  ' + req.profile)
     let user = req.profile && req.auth && req.profile._id == req.auth._id;
     if (!user) {
         return res.status(403).json({
@@ -67,7 +64,6 @@ exports.isAuth = (req, res, next) => {
 };
 
 exports.isAdmin = (req, res, next) => {
-    console.log('isAdmin()  ' + req.profile);
     if(!req.profile.role == 1) {
         return res.status(403).json({
             error: "not an admin, access denied"
