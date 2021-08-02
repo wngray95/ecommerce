@@ -6,13 +6,13 @@ const { requireSignin, isAuth, isAdmin } = require("../controller/auth");
 
 
 //routes
-router.get('/secret/:userId', requireSignin, isAuth, isAdmin, (req, res) => {
+router.get('/:userId', requireSignin, isAuth, isAdmin, (req, res) => {
     res.json({
         user: req.profile
     })
 });
 
-router.delete('/secret/:id', deleteById);
+router.delete('/delete/:id', deleteById);
 
 //router middleware
 router.param('userId', userById);

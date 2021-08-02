@@ -17,14 +17,9 @@ exports.create = (req, res) => {
 }
 
 //DELETE category by Id
-exports.delete = (req, res) => {
+exports.deleteById = (req, res) => {
     
     Category.findByIdAndDelete(req.params.id)
-    .then(data => {
-        if(!data) return res.status(404).json({ error: "catgeory not found with id" }) 
-        return res.json({ data })
-    })
-    .catch(err => {
-        res.status(400).json({ error: errorHandlge(err) });
-    })
+    .then(catagory => { return res.json({ deleted: catagory }) })
+    .catch(err => { return res.status(400).json({ error: errorHandlge(err) }) })
 }

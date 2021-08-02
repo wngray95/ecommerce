@@ -2,6 +2,7 @@ const formidable = require('formidable');
 const _ = require('lodash');
 const Product = require("../model/product");
 const fs = require('fs');
+const { errorHandler } = require('../helper/dbErrorHandler')
 
 
 exports.create = (req, res) => {
@@ -13,6 +14,13 @@ exports.create = (req, res) => {
     //parse form data to product model
     form.parse(req, (err, fields, files) => {
         if (err) return res.status(400).json({ error: 'Image could not be uploaded'});
+        
+        //Form field required validation
+        const {name,desciption,price,catagory,quantity} = fields;
+        if ( !(name || desciption || price || catagory || quantity) ) {
+            return res.status(400).json({ error: 'required field is missing'});
+        }
+        
         // create new product
         let product = new Product(fields);
 
@@ -25,11 +33,24 @@ exports.create = (req, res) => {
         }
 
         //save product using mongoose
-        product.save((err, result) => {
-            if (err) return res.json({ error: errorHandler(err) });
-            return res.json({result});
+        product.save()
+        .then(product => {
+            return res.json({ product });
+        })
+        .catch(err => {
+            return res.status(400).json({ error: errorHandler(err) });
          });
     });
+}
 
-    
+exports.deleteById = (req, res) => {
+
+    Product.findByIdAndDelete(req.params.id)
+    .then(product => { 
+        return res.json({ deleted: product }) 
+    })
+    .catch(err => { 
+        return res.status(400).json({ error: errorHandler(err) }) 
+    });
+
 }
