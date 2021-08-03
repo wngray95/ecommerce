@@ -20,7 +20,7 @@ exports.deleteById = (req, res) => {
 
     User.findByIdAndDelete(req.params.id)
     .then(user => { 
-        return res.json({ user })  
+        return res.json({ deleted : user })  
     })
     .catch(err => { 
         return res.status(400).json({ error: errorHandler(err) }) 
