@@ -4,27 +4,26 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const expressValidator = require('express-validator');
+const helmet = require('helmet'); 
 require('dotenv').config();
 
+const { dbConfig } = require('./config')
 const authRoutes = require('./routes/auth')
 const userRoutes = require('./routes/user')
 const categoryRoutes = require('./routes/category')
-const productRoutes = require('./routes/product')
+const productRoutes = require('./routes/product');
 
 //app
 const app = express();
 
 //db connection
-mongoose.connect(process.env.DATABASE, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true
-}).then(() => console.log("DB Connected"))
-.catch((err => console.log("Error connecting to db: " + err)));
+dbConfig();
 
 //middlewares
+app.use(helmet());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(expressValidator());
 
