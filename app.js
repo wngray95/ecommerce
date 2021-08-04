@@ -4,7 +4,8 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const expressValidator = require('express-validator');
-const helmet = require('helmet'); 
+const helmet  = require('helmet'); 
+const cors = require('cors');
 require('dotenv').config();
 
 const { dbConfig } = require('./config')
@@ -20,10 +21,11 @@ const app = express();
 dbConfig();
 
 //middlewares
+app.use(cors());
 app.use(helmet());
 app.use(morgan('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(expressValidator());
 

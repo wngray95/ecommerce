@@ -14,7 +14,7 @@ exports.signup = function(req, res) {
         return res.json({ "name": user.name, "email": user.email, "about": user.about }); 
     })
     .catch(err => {
-        return res.status(400).json({ error: errorHandler(err) });  
+        return res.status(400).json({ error: err });  
     })
 };
 
