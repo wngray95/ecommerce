@@ -38,10 +38,10 @@ exports.create = (req, res) => {
             return res.json({ saved: product.name, id: product.id });
         })
         .catch(err => {
-            return res.status(400).json({ error: errorHandler(err) });
+            return res.status(400).json({ error: err });
          });
     });
-}
+};
 
 exports.deleteById = (req, res) => {
     Product.findByIdAndDelete(req.params.id)
@@ -52,9 +52,9 @@ exports.deleteById = (req, res) => {
         return res.json({ deleted: product.name, id: product.id }) 
     })
     .catch(err => { 
-        return res.status(400).json({ error: errorHandler(err) }) 
+        return res.status(400).json({ error: err }) 
     });
-}
+};
 
 exports.productById = (req, res, next, id) => {
     Product.findById(id)
@@ -73,7 +73,7 @@ exports.productById = (req, res, next, id) => {
 exports.getProduct = (req, res) => {
     req.product.photo = undefined;
     return res.json({ product: req.product });
-}
+};
 
 exports.deleteProduct = (req, res) => {
     Product.deleteOne(req.product)
@@ -83,7 +83,7 @@ exports.deleteProduct = (req, res) => {
     .catch(err => {
         return res.status(400).json({ error: err }) 
     });
-}
+};
 
 
 exports.updateProduct = (req, res) => {
@@ -117,7 +117,7 @@ exports.updateProduct = (req, res) => {
             return res.status(400).json({ error: "Error updating product", msg: err }) 
         });
     });
-}
+};
 
 
 /**
@@ -137,8 +137,7 @@ exports.getAllProducts = (req, res) => {
         if(err) return res.status(400).json({ error: err })
         return res.json({ products: data })
     })
-
-}
+};
 
 /**
  * product/related/:productId?sortBy={var1}&order={var2}&limit={var3} 

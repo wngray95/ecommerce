@@ -38,7 +38,7 @@ exports.signin = function(req, res) {
         return res.json({ token, user: {_id, email, name, role} });
     })
     .catch(err => { 
-        return res.status(400).json({ error: errorHandler(err) }); 
+        return res.status(400).json({ error: err }); 
     });
 };
 
@@ -65,9 +65,7 @@ exports.isAuth = (req, res, next) => {
 
 exports.isAdmin = (req, res, next) => {
     if(!req.profile.role == 1) {
-        return res.status(403).json({
-            error: "not an admin, access denied"
-        });
+        return res.status(403).json({ error: "not an admin, access denied" });
     }
    next();
 }
